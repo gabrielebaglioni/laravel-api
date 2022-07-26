@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use App\Post;
 use App\Category;
 use App\Tag;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -18,7 +19,9 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::all(); 
+        // $posts = Post::all(); 
+        $user = Auth::user();
+        $posts = $user->posts;
         return view('admin.posts.index', compact('posts'));
     }
 
@@ -58,6 +61,7 @@ class PostController extends Controller
         $newPost->slug = $this->getSlug($data['title']);
 
         $newPost->published = isset($data['published']); // true o false
+        $newPost->user_id = Auth::id();
         $newPost->save();
         // redirect alla pagina del post appena creato
         if(isset($data['tags'])){
@@ -119,6 +123,8 @@ class PostController extends Controller
             $post->slug = $this->getSlug($data['title']);
         }
         $post->fill($data);
+
+        // $post->user_id = Auth::id();
 
         $post->published = isset($data['published']); // true o false
 
