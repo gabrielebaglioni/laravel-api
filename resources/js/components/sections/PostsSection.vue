@@ -47,6 +47,6 @@ export default {
     }
 }
 .post{
-   padding: .625rem;
+   padding: .625rem; 
 }
 </style>
